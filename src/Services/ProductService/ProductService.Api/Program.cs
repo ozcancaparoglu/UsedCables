@@ -1,4 +1,5 @@
 using Autofac;
+using Autofac.Extensions.DependencyInjection;
 using ProductService.Application;
 using ProductService.Domain;
 using UsedCables.Infrastructure.Ioc;
@@ -14,6 +15,8 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.InfrastructureServices();
 builder.Services.AddDomainServices(builder.Configuration);
+
+builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory());
 
 builder.Host.ConfigureContainer<ContainerBuilder>(ctx =>
 {

@@ -15,5 +15,10 @@ namespace ProductService.Application.Services.Contracts
         Task<PagerOutput<Product>> GetPagedAsync(PagerInput pagerInput);
         Task UpdateAsync(Product product);
         #endregion Crud Methods
+
+        #region Custom Methods
+        Task<PagerOutput<Product>> GetProductsWithParentIdAsync(int parentId);
+        Task<Product> GetCompleteProductAsync(int id);
+        #endregion Custom Methods
     }
 }

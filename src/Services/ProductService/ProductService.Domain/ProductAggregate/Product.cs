@@ -82,6 +82,14 @@ namespace ProductService.Domain.ProductAggregate
 
         #region ProductAttributes
 
+        public void SetProductAttributes(List<ProductAttributes> productAttributes)
+        {
+            foreach (var productAttribute in productAttributes)
+            {
+                _productAttributes.Add(productAttribute);
+            }
+        }
+
         public void AddProductAttributes(int attributeId, int attributeValueId, string attributeName, string attributeValueName)
         {
             var productAttributes = new ProductAttributes(Id, attributeId, attributeValueId, attributeName, attributeValueName);
@@ -90,7 +98,7 @@ namespace ProductService.Domain.ProductAggregate
 
         public void UpdateProductAttributes(int productAttributesId, int attributeId, int attributeValueId, string attributeName, string attributeValueName)
         {
-            var productAttributes = _productAttributes.FirstOrDefault(x => x.Id == productAttributesId);
+            var productAttributes = _productAttributes.Find(x => x.Id == productAttributesId);
 
             if (productAttributes != null)
                 productAttributes.Update(Id, attributeId, attributeValueId, attributeName, attributeValueName);
@@ -98,7 +106,7 @@ namespace ProductService.Domain.ProductAggregate
 
         public void RemoveProductAttributes(int productAttributesId)
         {
-            var productAttributes = _productAttributes.FirstOrDefault(x => x.Id == productAttributesId);
+            var productAttributes = _productAttributes.Find(x => x.Id == productAttributesId);
 
             if (productAttributes != null)
                 productAttributes.Deleted();
@@ -106,7 +114,7 @@ namespace ProductService.Domain.ProductAggregate
 
         public void RestoreProductAttributes(int productAttributesId)
         {
-            var productAttributes = _productAttributes.FirstOrDefault(x => x.Id == productAttributesId);
+            var productAttributes = _productAttributes.Find(x => x.Id == productAttributesId);
 
             if (productAttributes != null)
                 productAttributes.Restore();
@@ -116,6 +124,14 @@ namespace ProductService.Domain.ProductAggregate
 
         #region ProductPictures
 
+        public void SetProductPictures(List<ProductPictures> productPictures)
+        {
+            foreach (var productPicture in productPictures)
+            {
+                _productPictures.Add(productPicture);
+            }
+        }   
+
         public void AddProductPictures(string? pictureUrl, bool isApproved, int order)
         {
             var productPictures = new ProductPictures(Id, pictureUrl, isApproved, order);
@@ -124,7 +140,7 @@ namespace ProductService.Domain.ProductAggregate
 
         public void UpdateProductPictures(int productPicturesId, string? pictureUrl, bool isApproved, int order)
         {
-            var productPictures = _productPictures.FirstOrDefault(x => x.Id == productPicturesId);
+            var productPictures = _productPictures.Find(x => x.Id == productPicturesId);
 
             if (productPictures != null)
                 productPictures.Update(Id, pictureUrl, isApproved, order);
@@ -132,7 +148,7 @@ namespace ProductService.Domain.ProductAggregate
 
         public void RemoveProductPictures(int productPicturesId)
         {
-            var productPictures = _productPictures.FirstOrDefault(x => x.Id == productPicturesId);
+            var productPictures = _productPictures.Find(x => x.Id == productPicturesId);
 
             if (productPictures != null)
                 productPictures.Deleted();
@@ -140,7 +156,7 @@ namespace ProductService.Domain.ProductAggregate
 
         public void RestoreProductPictures(int productPicturesId)
         {
-            var productPictures = _productPictures.FirstOrDefault(x => x.Id == productPicturesId);
+            var productPictures = _productPictures.Find(x => x.Id == productPicturesId);
 
             if (productPictures != null)
                 productPictures.Restore();
@@ -150,6 +166,14 @@ namespace ProductService.Domain.ProductAggregate
 
         #region ProductSellers
 
+        public void SetProductSellers(List<ProductSellers> productSellers)
+        {
+            foreach (var productSeller in productSellers)
+            {
+                _productSellers.Add(productSeller);
+            }
+        }
+
         public void AddProductSellers(int sellerId, decimal price)
         {
             var productSellers = new ProductSellers(Id, sellerId, price);
@@ -158,7 +182,7 @@ namespace ProductService.Domain.ProductAggregate
 
         public void UpdateProductSellers(int productSellersId, int sellerId, decimal price)
         {
-            var productSellers = _productSellers.FirstOrDefault(x => x.Id == productSellersId);
+            var productSellers = _productSellers.Find(x => x.Id == productSellersId);
 
             if (productSellers != null)
                 productSellers.Update(Id, sellerId, price);
@@ -166,7 +190,7 @@ namespace ProductService.Domain.ProductAggregate
 
         public void RemoveProductSellers(int productSellersId)
         {
-            var productSellers = _productSellers.FirstOrDefault(x => x.Id == productSellersId);
+            var productSellers = _productSellers.Find(x => x.Id == productSellersId);
 
             if (productSellers != null)
                 productSellers.Deleted();
@@ -174,7 +198,7 @@ namespace ProductService.Domain.ProductAggregate
 
         public void RestoreProductSellers(int productSellersId)
         {
-            var productSellers = _productSellers.FirstOrDefault(x => x.Id == productSellersId);
+            var productSellers = _productSellers.Find(x => x.Id == productSellersId);
 
             if (productSellers != null)
                 productSellers.Restore();

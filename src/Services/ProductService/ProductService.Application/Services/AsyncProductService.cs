@@ -87,7 +87,9 @@ namespace ProductService.Application.Services
                 return;
             }
 
-            _unitOfWork.Repository<Product>().Delete(entity);
+            entity.Deleted();
+
+            _unitOfWork.Repository<Product>().Update(entity);
 
             await _unitOfWork.CommitAsync();
 
@@ -101,5 +103,55 @@ namespace ProductService.Application.Services
         public async Task BulkDeleteAsync(IEnumerable<Product> products) => await _unitOfWork.Repository<Product>().BulkDelete(products.ToList());
 
         #endregion Crud Methods
+
+        #region Custom Methods
+
+        public async Task<PagerOutput<Product>> GetProductsWithParentIdAsync(int parentId)
+        {
+            using (NpgsqlConnection connection = new(_connectionString))
+            {
+                await connection.OpenAsync();
+
+                string query = @$"SELECT * FROM ""Products"" WHERE ""ParentId"" = @ParentId AND ""State"" = @State;
+                                  SELECT COUNT(*) FROM ""Products"" WHERE ""ParentId"" = @ParentId AND ""State"" = @State";
+
+                using (var multi = await connection.QueryMultipleAsync(query, new { ParentId = parentId, State = (int)State.Active }))
+                {
+                    var products = await multi.ReadAsync<Product>();
+                    var total = await multi.ReadFirstAsync<int>();
+
+                    return new PagerOutput<Product>(products, total);
+                }
+            }
+        }
+
+        public async Task<Product> GetCompleteProductAsync(int id)
+        {
+            using (NpgsqlConnection connection = new(_connectionString))
+            {
+                await connection.OpenAsync();
+
+                string query = @$"SELECT * FROM ""Products"" WHERE ""Id"" = @Id AND ""State"" = @State;
+                                  SELECT * FROM ""ProductPictures"" WHERE ""ProductId"" = @Id AND ""State"" = @State;
+                                  SELECT * FROM ""ProductAttributes"" WHERE ""ProductId"" = @Id AND ""State"" = @State;
+                                  SELECT * FROM ""ProductSellers"" WHERE ""ProductId"" = @Id AND ""State"" = @State";
+
+                using (var multi = await connection.QueryMultipleAsync(query, new { Id = id, State = (int)State.Active }))
+                {
+                    var product = await multi.ReadFirstAsync<Product>();
+                    var productPictures = await multi.ReadAsync<ProductPictures>();
+                    var productAttributes = await multi.ReadAsync<ProductAttributes>();
+                    var productSellers = await multi.ReadAsync<ProductSellers>();
+
+                    product.SetProductPictures(productPictures.ToList());
+                    product.SetProductAttributes(productAttributes.ToList());
+                    product.SetProductSellers(productSellers.ToList());
+
+                    return product;
+                }
+            }
+        }   
+
+        #endregion Custom Methods
     }
 }

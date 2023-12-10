@@ -21,7 +21,7 @@
 
         public int Total { get; set; }
 
-        public static async Task<Result<T>> SuccessAsync(object data = null, PagerInput pagerInput = null, int total = 0)
+        public static async Task<Result<T>> SuccessAsync(object? data = null, PagerInput? pagerInput = null, int total = 0)
         {
             return await Task.Run(() =>
             {
@@ -33,7 +33,7 @@
         {
             return await Task.Run(() =>
             {
-                return new Result<T>(false, errors, null, null);
+                return new Result<T>(false, errors, null, null, 0);
             });
         }
 
@@ -41,7 +41,7 @@
         {
             return await Task.Run(() =>
             {
-                return new Result<T>(false, new List<string>() { error }, null, null);
+                return new Result<T>(false, new List<string>() { error }, null, null, 0);
             });
         }
     }
