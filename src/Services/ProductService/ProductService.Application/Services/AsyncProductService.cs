@@ -26,19 +26,28 @@ namespace ProductService.Application.Services
             _connectionString = _settings.Value.AppConnectionString;
         }
 
-        public async Task<IEnumerable<Product>> GetAllAsync(PagerInput pagerInput)
+        #region Crud Methods
+
+        public async Task<PagerOutput<Product>> GetPagedAsync(PagerInput pagerInput)
         {
             using (NpgsqlConnection connection = new(_connectionString))
             {
                 await connection.OpenAsync();
 
-                string query = @$"SELECT * FROM ""Products"" WHERE ""State"" = @State LIMIT {pagerInput.Take} OFFSET {pagerInput.Skip}";
+                string query = @$"SELECT * FROM ""Products"" WHERE ""State"" = @State LIMIT {pagerInput.Take} OFFSET {pagerInput.Skip};
+                                  SELECT COUNT(*) FROM ""Products"" WHERE ""State"" = @State";
 
-                return await connection.QueryAsync<Product>(query, new { State = (int)State.Active });
+                using (var multi = await connection.QueryMultipleAsync(query, new { State = (int)State.Active }))
+                {
+                    var products = await multi.ReadAsync<Product>();
+                    var total = await multi.ReadFirstAsync<int>();
+
+                    return new PagerOutput<Product>(products, total);
+                }
             }
         }
 
-        public async Task<Product?> GetByIdAsync(Guid id)
+        public async Task<Product?> GetByIdAsync(int id)
         {
             using (NpgsqlConnection connection = new(_connectionString))
             {
@@ -49,5 +58,48 @@ namespace ProductService.Application.Services
                 return await connection.QueryFirstOrDefaultAsync<Product>(query, new { Id = id, State = (int)State.Active });
             }
         }
+
+        public async Task AddAsync(Product product)
+        {
+            await _unitOfWork.Repository<Product>().Add(product);
+
+            await _unitOfWork.CommitAsync();
+
+            _logger.LogInformation($"Product with id: {product.Id} added.");
+        }
+
+        public async Task UpdateAsync(Product product)
+        {
+            _unitOfWork.Repository<Product>().Update(product);
+
+            await _unitOfWork.CommitAsync();
+
+            _logger.LogInformation($"Product with id: {product.Id} updated.");
+        }
+
+        public async Task DeleteAsync(int id)
+        {
+            var entity = await GetByIdAsync(id);
+
+            if (entity == null)
+            {
+                _logger.LogError($"Product with id: {id} not found.");
+                return;
+            }
+
+            _unitOfWork.Repository<Product>().Delete(entity);
+
+            await _unitOfWork.CommitAsync();
+
+            _logger.LogInformation($"Product with id: {entity.Id} deleted.");
+        }
+
+        public async Task BulkInsertAsync(IEnumerable<Product> products) => await _unitOfWork.Repository<Product>().BulkInsert(products.ToList());
+
+        public async Task BulkUpdateAsync(IEnumerable<Product> products) => await _unitOfWork.Repository<Product>().BulkUpdate(products.ToList());
+
+        public async Task BulkDeleteAsync(IEnumerable<Product> products) => await _unitOfWork.Repository<Product>().BulkDelete(products.ToList());
+
+        #endregion Crud Methods
     }
 }

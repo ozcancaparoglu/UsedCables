@@ -2,11 +2,12 @@
 {
     public class Result<T>
     {
-        internal Result(bool succeeded, IEnumerable<string> errors, object data, PagerInput? pagerInput)
+        internal Result(bool succeeded, IEnumerable<string> errors, object data, PagerInput? pagerInput, int total)
         {
             Succeeded = succeeded;
             Errors = errors.ToArray();
             Data = (T)data;
+            Total = total;
             NextPage = pagerInput?.NextPage();
         }
 
@@ -18,11 +19,13 @@
 
         public PagerInput? NextPage { get; set; }
 
-        public static async Task<Result<T>> SuccessAsync(object data = null, PagerInput pagerInput = null)
+        public int Total { get; set; }
+
+        public static async Task<Result<T>> SuccessAsync(object data = null, PagerInput pagerInput = null, int total = 0)
         {
             return await Task.Run(() =>
             {
-                return new Result<T>(true, Array.Empty<string>(), (T)data, pagerInput);
+                return new Result<T>(true, Array.Empty<string>(), (T)data, pagerInput, total);
             });
         }
 
