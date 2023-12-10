@@ -1,4 +1,7 @@
+using Autofac;
+using ProductService.Application;
 using ProductService.Domain;
+using UsedCables.Infrastructure.Ioc;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,7 +12,13 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.InfrastructureServices();
 builder.Services.AddDomainServices(builder.Configuration);
+
+builder.Host.ConfigureContainer<ContainerBuilder>(ctx =>
+{
+    ctx.RegisterModule(new Bootstrapper());
+});
 
 var app = builder.Build();
 

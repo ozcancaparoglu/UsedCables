@@ -2,7 +2,6 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using ProductService.Domain.Persistence;
-using UsedCables.Infrastructure.Cache.Redis;
 using UsedCables.Infrastructure.Configuration;
 
 namespace ProductService.Domain
@@ -16,8 +15,6 @@ namespace ProductService.Domain
 
             //For EF Core
             services.AddDbContext<AppDbContext>(options => options.UseNpgsql(configuration.GetConnectionString("AppConnectionString")));
-
-            services.Configure<RedisConfigurationOptions>(configuration.GetSection("RedisDatabase"));
 
             services.AddScoped<DbContext, AppDbContext>();
 
