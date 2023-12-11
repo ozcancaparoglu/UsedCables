@@ -14,24 +14,28 @@ namespace ProductService.Domain.ProductAggregate
 
         public decimal Price { get; private set; }
 
+        public int Quantity { get; private set; }
+
         protected ProductSellers()
         {
         }
 
-        public ProductSellers(int productId, int sellerId, decimal price)
+        public ProductSellers(int productId, int sellerId, decimal price, int quantity)
         {
             ProductId = productId;
             SellerId = sellerId;
             Price = price;
+            Quantity = quantity;
         }
 
         #region Methods
 
-        public void Update(int productId, int sellerId, decimal price)
+        public void Update(int productId, int sellerId, decimal price, int quantity)
         {
             ProductId = productId;
             SellerId = sellerId;
             Price = price;
+            Quantity = quantity;
         }
 
         public void Deleted()
@@ -47,6 +51,11 @@ namespace ProductService.Domain.ProductAggregate
         public void ChangePrice(decimal price)
         {
             Price = price;
+        }
+
+        public void ChangeQuantity(int quantity)
+        {
+            Quantity = quantity;
         }
 
         #endregion Methods

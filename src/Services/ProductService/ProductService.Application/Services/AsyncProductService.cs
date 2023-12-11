@@ -59,22 +59,26 @@ namespace ProductService.Application.Services
             }
         }
 
-        public async Task AddAsync(Product product)
+        public async Task<int> CreateAsync(Product product)
         {
             await _unitOfWork.Repository<Product>().Add(product);
 
             await _unitOfWork.CommitAsync();
 
             _logger.LogInformation($"Product with id: {product.Id} added.");
+
+            return product.Id;
         }
 
-        public async Task UpdateAsync(Product product)
+        public async Task<int> UpdateAsync(Product product)
         {
             _unitOfWork.Repository<Product>().Update(product);
 
             await _unitOfWork.CommitAsync();
 
             _logger.LogInformation($"Product with id: {product.Id} updated.");
+
+            return product.Id;
         }
 
         public async Task DeleteAsync(int id)
@@ -130,7 +134,7 @@ namespace ProductService.Application.Services
             using (NpgsqlConnection connection = new(_connectionString))
             {
                 await connection.OpenAsync();
-
+                //TODO: Böyle daha stabil olabilir. Hız konusuna bakılmalı.
                 string query = @$"SELECT * FROM ""Products"" WHERE ""Id"" = @Id AND ""State"" = @State;
                                   SELECT * FROM ""ProductPictures"" WHERE ""ProductId"" = @Id AND ""State"" = @State;
                                   SELECT * FROM ""ProductAttributes"" WHERE ""ProductId"" = @Id AND ""State"" = @State;
@@ -150,7 +154,32 @@ namespace ProductService.Application.Services
                     return product;
                 }
             }
-        }   
+        }
+
+        public async Task<Product?> GetCompleteProductJoinAsync(int id)
+        {
+            using (NpgsqlConnection connection = new(_connectionString))
+            {
+                await connection.OpenAsync();
+
+                string query = @$"SELECT * FROM ""Products"" AS p
+                                  LEFT JOIN ""ProductPictures"" AS pp ON p.""Id"" = pp.""ProductId""
+                                  LEFT JOIN ""ProductAttributes"" AS pa ON p.""Id"" = pa.""ProductId""
+                                  LEFT JOIN ""ProductSellers"" AS ps ON p.""Id"" = ps.""ProductId""
+                                  WHERE p.""Id"" = @Id AND p.""State"" = @State";
+
+                var product = await connection.QueryAsync<Product, ProductPictures, ProductAttributes, ProductSellers, Product>(query,
+                    (p, pp, pa, ps) =>
+                    {
+                        p.SetProductPictures([pp]);
+                        p.SetProductAttributes([pa]);
+                        p.SetProductSellers([ps]);
+                        return p;
+                    }, new { Id = id, State = (int)State.Active }, splitOn: "Id, Id, Id");
+
+                return product.FirstOrDefault();
+            }
+        }
 
         #endregion Custom Methods
     }

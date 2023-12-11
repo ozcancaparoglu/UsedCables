@@ -174,18 +174,18 @@ namespace ProductService.Domain.ProductAggregate
             }
         }
 
-        public void AddProductSellers(int sellerId, decimal price)
+        public void AddProductSellers(int sellerId, decimal price, int quantity)
         {
-            var productSellers = new ProductSellers(Id, sellerId, price);
+            var productSellers = new ProductSellers(Id, sellerId, price, quantity);
             _productSellers.Add(productSellers);
         }
 
-        public void UpdateProductSellers(int productSellersId, int sellerId, decimal price)
+        public void UpdateProductSellers(int productSellersId, int sellerId, decimal price, int quantity)
         {
             var productSellers = _productSellers.Find(x => x.Id == productSellersId);
 
             if (productSellers != null)
-                productSellers.Update(Id, sellerId, price);
+                productSellers.Update(Id, sellerId, price, quantity);
         }
 
         public void RemoveProductSellers(int productSellersId)

@@ -7,10 +7,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="ApiResponses\" />
-    <Folder Include="Features\Commands\" />
+    <Folder Include="ApiResponses\Commands\" />
+    <Folder Include="ApiResponses\Queries\" />
     <Folder Include="Features\Queries\" />
-    <Folder Include="Mappings\" />
   </ItemGroup>
 
   <ItemGroup>
