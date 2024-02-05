@@ -8,7 +8,6 @@
             Errors = errors.ToArray();
             Data = (T)data;
             Total = total;
-            NextPage = pagerInput?.NextPage();
         }
 
         public bool Succeeded { get; set; }
@@ -16,8 +15,6 @@
         public T Data { get; set; }
 
         public string[] Errors { get; set; }
-
-        public PagerInput? NextPage { get; set; }
 
         public int Total { get; set; }
 

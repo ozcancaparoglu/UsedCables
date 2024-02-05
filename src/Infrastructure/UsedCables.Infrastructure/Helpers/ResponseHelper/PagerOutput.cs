@@ -2,13 +2,13 @@
 {
     public class PagerOutput<T>
     {
-        private IEnumerable<T> entities;
-        private int total;
+        private readonly IEnumerable<T> Entities;
+        private readonly int Total;
 
         public PagerOutput(IEnumerable<T> entities, int total)
         {
-            this.entities = entities;
-            this.total = total;
+            Entities = entities;
+            Total = total;
         }
     }
 }

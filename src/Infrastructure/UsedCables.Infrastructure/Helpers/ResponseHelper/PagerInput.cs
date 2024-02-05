@@ -10,10 +10,5 @@
             Take = take;
             Skip = skip;
         }
-
-        public PagerInput NextPage()
-        {
-            return new PagerInput(Take, Skip + Take);
-        }
     }
 }

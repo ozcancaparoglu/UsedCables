@@ -2,7 +2,9 @@ using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using ProductService.Application;
 using ProductService.Domain;
+using Serilog;
 using UsedCables.Infrastructure.Ioc;
+using UsedCables.Infrastructure.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -23,6 +25,14 @@ builder.Host.ConfigureContainer<ContainerBuilder>(ctx =>
     ctx.RegisterModule(new Bootstrapper());
 });
 
+var logger = new LoggerConfiguration()
+    .WriteTo.Console()
+    .ReadFrom.Configuration(builder.Configuration)
+    .Enrich.FromLogContext()
+    .CreateLogger();
+builder.Logging.ClearProviders();
+builder.Logging.AddSerilog(logger);
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -37,5 +47,13 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
+
+app.UseMiddleware<ExceptionHandlingMiddleware>();
+
+app.UseMiddleware<JwtMiddleware>();
+
+app.UseAuthentication();
+
+app.UseAuthorization();
 
 app.Run();
