@@ -15,15 +15,13 @@ namespace ProductService.Application.Services
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly ILogger<AsyncProductService> _logger;
-        private readonly IOptions<ConnectionStrings> _settings;
         private readonly string _connectionString;
 
         public AsyncProductService(IUnitOfWork unitOfWork, ILogger<AsyncProductService> logger, IOptions<ConnectionStrings> settings)
         {
             _unitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
-            _settings = settings ?? throw new ArgumentNullException(nameof(settings));
-            _connectionString = _settings.Value.AppConnectionString;
+            _connectionString = settings.Value.AppConnectionString;
         }
 
         #region Crud Methods
@@ -61,11 +59,12 @@ namespace ProductService.Application.Services
 
         public async Task<int> CreateAsync(Product product)
         {
+
             await _unitOfWork.Repository<Product>().Add(product);
 
             await _unitOfWork.CommitAsync();
 
-            _logger.LogInformation($"Product with id: {product.Id} added.");
+            _logger.LogInformation("Product created with id: {0}", product.Id);
 
             return product.Id;
         }
@@ -76,7 +75,7 @@ namespace ProductService.Application.Services
 
             await _unitOfWork.CommitAsync();
 
-            _logger.LogInformation($"Product with id: {product.Id} updated.");
+            _logger.LogInformation("Product updated with id: {0}", product.Id);
 
             return product.Id;
         }
@@ -87,7 +86,7 @@ namespace ProductService.Application.Services
 
             if (entity == null)
             {
-                _logger.LogError($"Product with id: {id} not found.");
+                _logger.LogError("Product not found with id: {0}", id);
                 return;
             }
 
@@ -97,7 +96,7 @@ namespace ProductService.Application.Services
 
             await _unitOfWork.CommitAsync();
 
-            _logger.LogInformation($"Product with id: {entity.Id} deleted.");
+            _logger.LogInformation("Product deleted with id: {0}", id);
         }
 
         public async Task BulkInsertAsync(IEnumerable<Product> products) => await _unitOfWork.Repository<Product>().BulkInsert(products.ToList());

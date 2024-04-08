@@ -2,9 +2,9 @@
 using ProductService.Application.Features.Commands.ProductCommon;
 using UsedCables.Infrastructure.Helpers.ResponseHelper;
 
-namespace ProductService.Application.Features.Commands.CreateProduct
+namespace ProductService.Application.Features.Commands.UpdateProduct
 {
-    public class CreateProductCommand : IRequest<Result<bool>>
+    public class UpdateProductCommand : IRequest<Result<bool>>
     {
         public int ParentProductId { get; set; }
         public string Name { get; set; }

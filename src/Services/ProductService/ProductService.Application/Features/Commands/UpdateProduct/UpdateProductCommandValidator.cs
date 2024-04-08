@@ -1,11 +1,11 @@
 ﻿using FluentValidation;
 using ProductService.Application.Features.Commands.ProductCommon;
 
-namespace ProductService.Application.Features.Commands.CreateProduct
+namespace ProductService.Application.Features.Commands.UpdateProduct
 {
-    public class CreateProductCommandValidator : AbstractValidator<CreateProductCommand>
+    public class UpdateProductCommandValidator : AbstractValidator<UpdateProductCommand>
     {
-        public CreateProductCommandValidator()
+        public UpdateProductCommandValidator()
         {
             RuleFor(x => x.Name)
                 .NotEmpty().WithMessage("{Name} is required.")
