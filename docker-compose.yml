@@ -1,0 +1,28 @@
+version: '3.4'
+
+services:
+  appdbs:
+    image: postgres:latest
+  
+  redisdb:
+    image: redis:alpine
+
+  pgadmin:
+    image: dpage/pgadmin4
+
+  productservice.api:
+    image: ${DOCKER_REGISTRY-}productserviceapi
+    build:
+      context: .
+      dockerfile: src/Services/ProductService/ProductService.Api/Dockerfile
+  
+  authentication.api:
+    image: ${DOCKER_REGISTRY-}authenticationapi
+    build:
+      context: .
+      dockerfile: src/Authentication/Authentication.Api/Dockerfile
+
+volumes:
+  postgres_data:
+  pgadmin_data:
+

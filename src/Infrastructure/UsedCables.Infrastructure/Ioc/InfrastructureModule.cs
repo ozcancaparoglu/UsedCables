@@ -7,6 +7,7 @@ using System.Reflection;
 using UsedCables.Infrastructure.Behaviours;
 using UsedCables.Infrastructure.Cache;
 using UsedCables.Infrastructure.Cache.Redis;
+using UsedCables.Infrastructure.Helpers.Authentication.JwtManager;
 using UsedCables.Infrastructure.Helpers.RestHelper;
 using UsedCables.Infrastructure.Middlewares;
 using UsedCables.Infrastructure.Repositories;
@@ -31,6 +32,10 @@ namespace UsedCables.Infrastructure.Ioc
             services.AddScoped<IUnitOfWork, UnitOfWork>();
 
             #endregion Repositories
+
+            #region Authentication
+            services.AddTransient<IJwtTokenManager, JwtTokenManager>();
+            #endregion
 
             #region Validators
 

@@ -5,7 +5,7 @@ namespace ProductService.Domain.ProductAggregate
 {
     public class ProductPictures : EntityBase
     {
-        public int ProductId { get; private set; }
+        public Guid ProductId { get; private set; }
 
         [ForeignKey("ProductId")]
         public virtual Product? Product { get; private set; }
@@ -18,7 +18,7 @@ namespace ProductService.Domain.ProductAggregate
         {
         }
 
-        public ProductPictures(int productId, string? pictureUrl, bool isApproved, int order)
+        public ProductPictures(Guid productId, string? pictureUrl, bool isApproved, int order)
         {
             ProductId = productId;
             PictureUrl = pictureUrl;
@@ -28,7 +28,7 @@ namespace ProductService.Domain.ProductAggregate
 
         #region Methods
 
-        public void Update(int productId, string? pictureUrl, bool isApproved, int order)
+        public void Update(Guid productId, string? pictureUrl, bool isApproved, int order)
         {
             ProductId = productId;
             PictureUrl = pictureUrl;

@@ -6,14 +6,14 @@ namespace ProductService.Domain.ProductAggregate
 {
     public class ProductAttributes : EntityBase
     {
-        public int ProductId { get; private set; }
+        public Guid ProductId { get; private set; }
 
         [ForeignKey("ProductId")]
         public virtual Product? Product { get; private set; }
 
-        public int AttributeId { get; private set; }
+        public Guid AttributeId { get; private set; }
 
-        public int AttributeValueId { get; private set; }
+        public Guid AttributeValueId { get; private set; }
 
         [Required]
         [MaxLength(500)]
@@ -27,7 +27,7 @@ namespace ProductService.Domain.ProductAggregate
         {
         }
 
-        public ProductAttributes(int productId, int attributeId, int attributeValueId, string attributeName, string attributeValueName)
+        public ProductAttributes(Guid productId, Guid attributeId, Guid attributeValueId, string attributeName, string attributeValueName)
         {
             ProductId = productId;
             AttributeId = attributeId;
@@ -38,7 +38,7 @@ namespace ProductService.Domain.ProductAggregate
 
         #region Methods
 
-        public void Update(int productId, int attributeId, int attributeValueId, string attributeName, string attributeValueName)
+        public void Update(Guid productId, Guid attributeId, Guid attributeValueId, string attributeName, string attributeValueName)
         {
             ProductId = productId;
             AttributeId = attributeId;
@@ -67,12 +67,12 @@ namespace ProductService.Domain.ProductAggregate
             AttributeValueName = attributeValueName;
         }
 
-        public void ChangeAttribute(int attributeId)
+        public void ChangeAttribute(Guid attributeId)
         {
             AttributeId = attributeId;
         }
 
-        public void ChangeAttributeValue(int attributeValueId)
+        public void ChangeAttributeValue(Guid attributeValueId)
         {
             AttributeValueId = attributeValueId;
         }

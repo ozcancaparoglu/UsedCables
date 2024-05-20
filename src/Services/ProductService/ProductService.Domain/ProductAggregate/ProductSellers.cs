@@ -5,12 +5,12 @@ namespace ProductService.Domain.ProductAggregate
 {
     public class ProductSellers : EntityBase
     {
-        public int ProductId { get; private set; }
+        public Guid ProductId { get; private set; }
 
         [ForeignKey("ProductId")]
         public virtual Product? Product { get; private set; }
 
-        public int SellerId { get; private set; }
+        public Guid SellerId { get; private set; }
 
         public decimal Price { get; private set; }
 
@@ -20,7 +20,7 @@ namespace ProductService.Domain.ProductAggregate
         {
         }
 
-        public ProductSellers(int productId, int sellerId, decimal price, int quantity)
+        public ProductSellers(Guid productId, Guid sellerId, decimal price, int quantity)
         {
             ProductId = productId;
             SellerId = sellerId;
@@ -30,7 +30,7 @@ namespace ProductService.Domain.ProductAggregate
 
         #region Methods
 
-        public void Update(int productId, int sellerId, decimal price, int quantity)
+        public void Update(Guid productId, Guid sellerId, decimal price, int quantity)
         {
             ProductId = productId;
             SellerId = sellerId;

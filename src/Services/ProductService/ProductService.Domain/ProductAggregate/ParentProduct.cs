@@ -5,7 +5,7 @@ namespace ProductService.Domain.ProductAggregate
 {
     public class ParentProduct : EntityBase
     {
-        public int CategoryId { get; private set; }
+        public Guid CategoryId { get; private set; }
 
         [Required]
         [MaxLength(500)]
@@ -22,7 +22,7 @@ namespace ProductService.Domain.ProductAggregate
             _products = [];
         }
 
-        public ParentProduct(int categoryId, string name, string? description)
+        public ParentProduct(Guid categoryId, string name, string? description)
         {
             CategoryId = categoryId;
             Name = name;
@@ -31,7 +31,7 @@ namespace ProductService.Domain.ProductAggregate
 
         #region Methods
 
-        public void Update(int categoryId, string name, string? description)
+        public void Update(Guid categoryId, string name, string? description)
         {
             CategoryId = categoryId;
             Name = name;
@@ -58,7 +58,7 @@ namespace ProductService.Domain.ProductAggregate
             Description = description;
         }
 
-        public void ChangeCategory(int categoryId)
+        public void ChangeCategory(Guid categoryId)
         {
             CategoryId = categoryId;
         }

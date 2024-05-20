@@ -7,7 +7,7 @@ namespace ProductService.Domain.ProductAggregate
     public class Product : EntityBase
     {
         [Required]
-        public int ParentProductId { get; private set; }
+        public Guid ParentProductId { get; private set; }
 
         [ForeignKey("ParentProductId")]
         public virtual ParentProduct? ParentProduct { get; private set; }
@@ -37,7 +37,7 @@ namespace ProductService.Domain.ProductAggregate
             _productSellers = [];
         }
 
-        public Product(int parentProductId, string name, string? description)
+        public Product(Guid parentProductId, string name, string? description)
         {
             ParentProductId = parentProductId;
             Name = name;
@@ -46,7 +46,7 @@ namespace ProductService.Domain.ProductAggregate
 
         #region Methods
 
-        public void Update(int parentProductId, string name, string? description)
+        public void Update(Guid parentProductId, string name, string? description)
         {
             ParentProductId = parentProductId;
             Name = name;
@@ -73,7 +73,7 @@ namespace ProductService.Domain.ProductAggregate
             Description = description;
         }
 
-        public void ChangeParentProduct(int parentProductId)
+        public void ChangeParentProduct(Guid parentProductId)
         {
             ParentProductId = parentProductId;
         }
@@ -90,34 +90,31 @@ namespace ProductService.Domain.ProductAggregate
             }
         }
 
-        public void AddProductAttributes(int attributeId, int attributeValueId, string attributeName, string attributeValueName)
+        public void AddProductAttributes(Guid attributeId, Guid attributeValueId, string attributeName, string attributeValueName)
         {
             var productAttributes = new ProductAttributes(Id, attributeId, attributeValueId, attributeName, attributeValueName);
             _productAttributes.Add(productAttributes);
         }
 
-        public void UpdateProductAttributes(int productAttributesId, int attributeId, int attributeValueId, string attributeName, string attributeValueName)
+        public void UpdateProductAttributes(Guid productAttributesId, Guid attributeId, Guid attributeValueId, string attributeName, string attributeValueName)
         {
             var productAttributes = _productAttributes.Find(x => x.Id == productAttributesId);
 
-            if (productAttributes != null)
-                productAttributes.Update(Id, attributeId, attributeValueId, attributeName, attributeValueName);
+            productAttributes?.Update(Id, attributeId, attributeValueId, attributeName, attributeValueName);
         }
 
-        public void RemoveProductAttributes(int productAttributesId)
+        public void RemoveProductAttributes(Guid productAttributesId)
         {
             var productAttributes = _productAttributes.Find(x => x.Id == productAttributesId);
 
-            if (productAttributes != null)
-                productAttributes.Deleted();
+            productAttributes?.Deleted();
         }
 
-        public void RestoreProductAttributes(int productAttributesId)
+        public void RestoreProductAttributes(Guid productAttributesId)
         {
             var productAttributes = _productAttributes.Find(x => x.Id == productAttributesId);
 
-            if (productAttributes != null)
-                productAttributes.Restore();
+            productAttributes?.Restore();
         }
 
         #endregion ProductAttributes
@@ -138,28 +135,25 @@ namespace ProductService.Domain.ProductAggregate
             _productPictures.Add(productPictures);
         }
 
-        public void UpdateProductPictures(int productPicturesId, string? pictureUrl, bool isApproved, int order)
+        public void UpdateProductPictures(Guid productPicturesId, string? pictureUrl, bool isApproved, int order)
         {
             var productPictures = _productPictures.Find(x => x.Id == productPicturesId);
 
-            if (productPictures != null)
-                productPictures.Update(Id, pictureUrl, isApproved, order);
+            productPictures?.Update(Id, pictureUrl, isApproved, order);
         }
 
-        public void RemoveProductPictures(int productPicturesId)
+        public void RemoveProductPictures(Guid productPicturesId)
         {
             var productPictures = _productPictures.Find(x => x.Id == productPicturesId);
 
-            if (productPictures != null)
-                productPictures.Deleted();
+            productPictures?.Deleted();
         }
 
-        public void RestoreProductPictures(int productPicturesId)
+        public void RestoreProductPictures(Guid productPicturesId)
         {
             var productPictures = _productPictures.Find(x => x.Id == productPicturesId);
 
-            if (productPictures != null)
-                productPictures.Restore();
+            productPictures?.Restore();
         }
 
         #endregion ProductPictures
@@ -174,34 +168,31 @@ namespace ProductService.Domain.ProductAggregate
             }
         }
 
-        public void AddProductSellers(int sellerId, decimal price, int quantity)
+        public void AddProductSellers(Guid sellerId, decimal price, int quantity)
         {
             var productSellers = new ProductSellers(Id, sellerId, price, quantity);
             _productSellers.Add(productSellers);
         }
 
-        public void UpdateProductSellers(int productSellersId, int sellerId, decimal price, int quantity)
+        public void UpdateProductSellers(Guid productSellersId, Guid sellerId, decimal price, int quantity)
         {
             var productSellers = _productSellers.Find(x => x.Id == productSellersId);
 
-            if (productSellers != null)
-                productSellers.Update(Id, sellerId, price, quantity);
+            productSellers?.Update(Id, sellerId, price, quantity);
         }
 
-        public void RemoveProductSellers(int productSellersId)
+        public void RemoveProductSellers(Guid productSellersId)
         {
             var productSellers = _productSellers.Find(x => x.Id == productSellersId);
 
-            if (productSellers != null)
-                productSellers.Deleted();
+            productSellers?.Deleted();
         }
 
-        public void RestoreProductSellers(int productSellersId)
+        public void RestoreProductSellers(Guid productSellersId)
         {
             var productSellers = _productSellers.Find(x => x.Id == productSellersId);
 
-            if (productSellers != null)
-                productSellers.Restore();
+            productSellers?.Restore();
         }
 
         #endregion ProductSellers

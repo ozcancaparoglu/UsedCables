@@ -19,8 +19,4 @@
     <PackageReference Include="StackExchange.Redis" Version="2.7.4" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Helpers\Authentication\JwtManager\" />
-  </ItemGroup>
-
 </Project>

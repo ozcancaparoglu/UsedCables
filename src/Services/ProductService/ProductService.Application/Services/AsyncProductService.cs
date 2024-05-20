@@ -45,7 +45,7 @@ namespace ProductService.Application.Services
             }
         }
 
-        public async Task<Product?> GetByIdAsync(int id)
+        public async Task<Product?> GetByIdAsync(Guid id)
         {
             using (NpgsqlConnection connection = new(_connectionString))
             {
@@ -57,7 +57,7 @@ namespace ProductService.Application.Services
             }
         }
 
-        public async Task<int> CreateAsync(Product product)
+        public async Task<Guid> CreateAsync(Product product)
         {
 
             await _unitOfWork.Repository<Product>().Add(product);
@@ -69,7 +69,7 @@ namespace ProductService.Application.Services
             return product.Id;
         }
 
-        public async Task<int> UpdateAsync(Product product)
+        public async Task<Guid> UpdateAsync(Product product)
         {
             _unitOfWork.Repository<Product>().Update(product);
 
@@ -80,7 +80,7 @@ namespace ProductService.Application.Services
             return product.Id;
         }
 
-        public async Task DeleteAsync(int id)
+        public async Task DeleteAsync(Guid id)
         {
             var entity = await GetByIdAsync(id);
 
@@ -109,7 +109,7 @@ namespace ProductService.Application.Services
 
         #region Custom Methods
 
-        public async Task<PagerOutput<Product>> GetProductsWithParentIdAsync(int parentId)
+        public async Task<PagerOutput<Product>> GetProductsWithParentIdAsync(Guid parentId)
         {
             using (NpgsqlConnection connection = new(_connectionString))
             {
@@ -128,7 +128,7 @@ namespace ProductService.Application.Services
             }
         }
 
-        public async Task<Product> GetCompleteProductAsync(int id)
+        public async Task<Product> GetCompleteProductAsync(Guid id)
         {
             using (NpgsqlConnection connection = new(_connectionString))
             {
@@ -155,7 +155,7 @@ namespace ProductService.Application.Services
             }
         }
 
-        public async Task<Product?> GetCompleteProductJoinAsync(int id)
+        public async Task<Product?> GetCompleteProductJoinAsync(Guid id)
         {
             using (NpgsqlConnection connection = new(_connectionString))
             {

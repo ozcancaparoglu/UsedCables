@@ -8,8 +8,7 @@
 
   <ItemGroup>
     <Folder Include="ApiResponses\Commands\" />
-    <Folder Include="ApiResponses\Queries\" />
-    <Folder Include="Features\Queries\" />
+    <Folder Include="Features\Queries\GetProductList\" />
   </ItemGroup>
 
   <ItemGroup>

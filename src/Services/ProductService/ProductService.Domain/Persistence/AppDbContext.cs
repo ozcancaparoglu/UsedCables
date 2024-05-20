@@ -24,7 +24,18 @@ namespace ProductService.Domain.Persistence
 
         public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
         {
-            int currentUser = int.TryParse(_httpContextAccessor.HttpContext.Items["User"].ToString(), out currentUser) ? currentUser : 1;
+            var currentUser = new UserInfo();
+
+            try
+            {
+                currentUser = (UserInfo)_httpContextAccessor.HttpContext.Items["User"];
+            }
+            catch
+            {
+                currentUser.UserId = 1;
+                currentUser.Username = "System";
+                currentUser.Email = "ozcan.caparoglu@hotmail.com";
+            }
 
             foreach (var entry in ChangeTracker.Entries<EntityBase>())
             {
@@ -33,12 +44,12 @@ namespace ProductService.Domain.Persistence
                     case EntityState.Added:
                         entry.Entity.CreatedAt = DateTime.Now;
                         entry.Entity.State = (int)State.Active;
-                        entry.Entity.ProcessedBy = currentUser;
+                        entry.Entity.ProcessedBy = currentUser.UserId;
                         break;
 
                     case EntityState.Modified:
                         entry.Entity.UpdatedAt = DateTime.Now;
-                        entry.Entity.ProcessedBy = currentUser;
+                        entry.Entity.ProcessedBy = currentUser.UserId;
                         break;
                 }
             }

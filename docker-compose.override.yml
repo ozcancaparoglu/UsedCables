@@ -1,0 +1,58 @@
+version: '3.4'
+
+services:
+
+  appdbs:
+    container_name: appdbs
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: 6wuvirmipwpdd4qnu
+    restart: always
+    ports:
+      - "5433:5433"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  redisdb:
+    container_name: redisdb
+    restart: always
+    ports:
+      - "6379:6379"
+
+  pgadmin:
+    container_name: pgadmin
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=info@kabloportal.com
+      - PGADMIN_DEFAULT_PASSWORD=lrByR2Ht
+    restart: always
+    ports:
+        - "5050:80"
+    volumes:
+      - pgadmin_data:/root/.pgadmin
+
+  productservice.api:
+    container_name: productservice.api
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - "ConnectionStrings:AppConnectionString=Server=servicesdb;Port=5433;Database=productdb;User Id=admin;Password=ce8iDJv4"
+    depends_on:
+      - appdbs
+      - redisdb
+    ports:
+      - "8000:80"
+    volumes:
+      - ${APPDATA}/Microsoft/UserSecrets:/home/app/.microsoft/usersecrets:ro
+      - ${APPDATA}/ASP.NET/Https:/home/app/.aspnet/https:ro
+
+  authentication.api:
+    container_name: authentication.api
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - "ConnectionStrings:AppConnectionString=Server=servicesdb;Port=5433;Database=userdb;User Id=admin;Password=9016uKuQaj"
+    depends_on:
+      - appdbs
+    ports:
+      - "8001:80"
+    volumes:
+      - ${APPDATA}/Microsoft/UserSecrets:/home/app/.microsoft/usersecrets:ro
+      - ${APPDATA}/ASP.NET/Https:/home/app/.aspnet/https:ro

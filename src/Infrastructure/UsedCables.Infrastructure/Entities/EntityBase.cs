@@ -5,7 +5,7 @@ namespace UsedCables.Infrastructure.Entities
     public abstract class EntityBase
     {
         [Key]
-        public int Id { get; set; }
+        public Guid Id { get; set; }
         public int? State { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime? UpdatedAt { get; set; }

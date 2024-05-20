@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
+using ProductService.Application.ApiResponses.Queries.GetProduct;
 using ProductService.Application.Features.Commands.CreateProduct;
+using ProductService.Application.Features.Commands.ProductCommon;
 using ProductService.Domain.ProductAggregate;
 
 namespace ProductService.Application.Mappings
@@ -12,6 +14,7 @@ namespace ProductService.Application.Mappings
             CreateMap<ProductAttributesCommand, ProductAttributes>();
             CreateMap<ProductPicturesCommand, ProductPictures>();
             CreateMap<ProductSellersCommand, ProductSellers>();
+            CreateMap<Product, GetProductResponse>();
         }
     }
 }
