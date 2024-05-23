@@ -1,4 +1,6 @@
 using Authentication.Infrastructure;
+using Autofac;
+using Autofac.Extensions.DependencyInjection;
 using UsedCables.Infrastructure.Ioc;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -14,6 +16,13 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.InfrastructureServices();
 builder.Services.AddAuthenticationServices(builder.Configuration);
+builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory());
+
+builder.Host.ConfigureContainer<ContainerBuilder>(ctx =>
+{
+    ctx.RegisterModule(new Bootstrapper());
+});
+
 
 var app = builder.Build();
 

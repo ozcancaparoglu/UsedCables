@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Authentication.Infrastructure.Models
 {
-    public class ApplicationUser : IdentityUser<Guid>
+    public class ApplicationUser : IdentityUser
     {
         [Required]
         [StringLength(100)]

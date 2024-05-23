@@ -7,9 +7,10 @@ services:
     environment:
       POSTGRES_USER: admin
       POSTGRES_PASSWORD: 6wuvirmipwpdd4qnu
+      POSTGRES_DB: productdb
     restart: always
     ports:
-      - "5433:5433"
+      - "5433:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
 
@@ -34,7 +35,7 @@ services:
     container_name: productservice.api
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-      - "ConnectionStrings:AppConnectionString=Server=servicesdb;Port=5433;Database=productdb;User Id=admin;Password=ce8iDJv4"
+      - "ConnectionStrings:AppConnectionString=Server=appdbs;Port=5433;Database=productdb;User Id=admin;Password=6wuvirmipwpdd4qnu"
     depends_on:
       - appdbs
       - redisdb
@@ -48,7 +49,7 @@ services:
     container_name: authentication.api
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-      - "ConnectionStrings:AppConnectionString=Server=servicesdb;Port=5433;Database=userdb;User Id=admin;Password=9016uKuQaj"
+      - "ConnectionStrings:AppConnectionString=Server=appdbs;Port=5433;Database=userdb;User Id=admin;Password=6wuvirmipwpdd4qnu"
     depends_on:
       - appdbs
     ports:

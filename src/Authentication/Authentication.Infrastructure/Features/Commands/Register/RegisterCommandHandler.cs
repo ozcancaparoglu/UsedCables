@@ -9,10 +9,10 @@ namespace Authentication.Infrastructure.Features.Commands.Register
     public class RegisterCommandHandler : IRequestHandler<RegisterCommand, Result<ApplicationUser>>
     {
         private readonly UserManager<ApplicationUser> _userManager;
-        private readonly RoleManager<ApplicationRole> _roleManager;
+        private readonly RoleManager<IdentityRole> _roleManager;
         private readonly ILogger<RegisterCommandHandler> _logger;
 
-        public RegisterCommandHandler(UserManager<ApplicationUser> userManager, RoleManager<ApplicationRole> roleManager, ILogger<RegisterCommandHandler> logger)
+        public RegisterCommandHandler(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager, ILogger<RegisterCommandHandler> logger)
         {
             _userManager = userManager ?? throw new ArgumentNullException(nameof(userManager));
             _roleManager = roleManager ?? throw new ArgumentNullException(nameof(roleManager));

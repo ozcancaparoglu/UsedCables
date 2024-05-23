@@ -17,8 +17,7 @@ namespace UsedCables.Infrastructure.Helpers.Authentication.JwtManager
         }
 
         /// <summary>
-        /// Using for both token generation and refresh token generation
-        /// If roles are not provided, token will be valid for 15 minutes
+        /// Using token generation
         /// </summary>
         /// <param name="username">User Name</param>
         /// <param name="roles">User Roles</param>

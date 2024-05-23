@@ -29,7 +29,7 @@ namespace Authentication.Infrastructure.Features.Commands.CreateRole
                     _logger.LogError("Failed to create role: {Role}", role);
             }
 
-            return await Result<bool>.SuccessAsync();
+            return await Result<bool>.SuccessAsync(true);
         }
     }
 }

@@ -4,11 +4,8 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Authentication.Infrastructure.Persistence
 {
-    public class AppDbContext : IdentityDbContext<ApplicationUser, ApplicationRole, Guid>
+    public class AppDbContext : IdentityDbContext<ApplicationUser>
     {
-        protected AppDbContext()
-        {
-        }
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
         {
         }
